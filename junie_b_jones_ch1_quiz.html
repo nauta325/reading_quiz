@@ -1,812 +1,404 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Junie B. Jones - Chapter 1 Quiz</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8" />
+  <title>Junie B. Jones Chapter 1 Quiz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      --accent: #4f46e5;
+      --accent-soft: #eef2ff;
+      --danger: #dc2626;
+      --success: #16a34a;
+      --card-bg: #ffffff;
+      --bg: #f3f4f6;
+    }
 
-        body {
-            font-family: 'Comic Sans MS', 'Arial', sans-serif;
-            background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
+    * {
+      box-sizing: border-box;
+    }
 
-        .quiz-container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-            padding: 40px;
-        }
+    body {
+      margin: 0;
+      background: radial-gradient(circle at top, #e0f2fe, #eef2ff 40%, #f9fafb);
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 24px 12px;
+    }
 
-        .quiz-header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 3px solid #ff69b4;
-        }
+    .quiz-card {
+      width: 100%;
+      max-width: 720px;
+      background: var(--card-bg);
+      border-radius: 18px;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.18);
+      padding: 24px 20px 28px;
+      position: relative;
+      overflow: hidden;
+    }
 
-        .quiz-header h1 {
-            color: #ff69b4;
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
+    .quiz-card::before {
+      content: "";
+      position: absolute;
+      inset: -60%;
+      background: radial-gradient(circle at top left, #a5b4fc55, transparent 55%);
+      opacity: 0.8;
+      pointer-events: none;
+    }
 
-        .book-info {
-            display: inline-block;
-            background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
-            color: white;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 14px;
-            margin-top: 10px;
-        }
+    .quiz-inner {
+      position: relative;
+      z-index: 1;
+    }
 
-        .student-info {
-            background-color: #f5f5f5;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 30px;
-        }
+    h1 {
+      margin: 0 0 4px;
+      font-size: 1.6rem;
+      letter-spacing: -0.02em;
+      color: #111827;
+    }
 
-        .student-info label {
-            display: block;
-            margin-bottom: 8px;
-            color: #333;
-            font-weight: bold;
-        }
+    .subtitle {
+      margin: 0 0 18px;
+      color: #6b7280;
+      font-size: 0.95rem;
+    }
 
-        .student-info input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: #4338ca;
+      font-size: 0.78rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
 
-        .student-info input:focus {
-            outline: none;
-            border-color: #ff69b4;
-        }
+    .pill span {
+      font-size: 0.75rem;
+      opacity: 0.9;
+    }
 
-        .part-title {
-            background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
-            color: white;
-            padding: 15px 20px;
-            border-radius: 10px;
-            margin: 30px 0 20px 0;
-            font-size: 18px;
-            font-weight: bold;
-        }
+    .question {
+      margin-bottom: 20px;
+      padding: 14px 14px 12px;
+      border-radius: 14px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+    }
 
-        .question {
-            background-color: #f9f9f9;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 10px;
-            border-left: 5px solid #ff69b4;
-        }
+    .question-title {
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #111827;
+      font-size: 0.97rem;
+    }
 
-        .question-number {
-            color: #ff69b4;
-            font-weight: bold;
-            margin-bottom: 12px;
-            font-size: 16px;
-        }
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
 
-        .options {
-            margin-top: 15px;
-        }
+    .option-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-size: 0.92rem;
+      color: #374151;
+      background: #ffffff;
+    }
 
-        .option {
-            background-color: white;
-            padding: 12px 15px;
-            margin: 8px 0;
-            border-radius: 8px;
-            border: 2px solid #e0e0e0;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-        }
+    .option-label input {
+      margin-top: 3px;
+    }
 
-        .option:hover {
-            border-color: #ff69b4;
-            background-color: #fff0f5;
-        }
+    .option-label:hover {
+      border-color: var(--accent-soft);
+      background: #f5f3ff;
+    }
 
-        .option input[type="radio"] {
-            margin-right: 10px;
-            cursor: pointer;
-        }
+    .option-label.correct {
+      border-color: var(--success);
+      background: #dcfce7;
+    }
 
-        .submit-button {
-            background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
-            color: white;
-            padding: 15px 40px;
-            border: none;
-            border-radius: 10px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 30px;
-            transition: transform 0.3s;
-        }
+    .option-label.wrong {
+      border-color: var(--danger);
+      background: #fee2e2;
+    }
 
-        .submit-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(255, 105, 180, 0.4);
-        }
+    .option-label.selected:not(.correct):not(.wrong) {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
 
-        .submit-button:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-        }
+    .question-footer {
+      margin-top: 6px;
+      font-size: 0.78rem;
+      color: #9ca3af;
+    }
 
-        .result {
-            margin-top: 30px;
-            padding: 25px;
-            border-radius: 10px;
-            text-align: center;
-            display: none;
-        }
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
 
-        .result.show {
-            display: block;
-        }
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 9px 18px;
+      font-size: 0.92rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
 
-        .result.pass {
-            background-color: #e8f5e9;
-            border: 3px solid #4caf50;
-        }
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+      box-shadow: 0 10px 20px rgba(79, 70, 229, 0.35);
+    }
 
-        .result.fail {
-            background-color: #ffebee;
-            border: 3px solid #f44336;
-        }
+    .btn-primary:active {
+      transform: translateY(1px);
+      box-shadow: 0 6px 14px rgba(79, 70, 229, 0.35);
+    }
 
-        .result h2 {
-            font-size: 28px;
-            margin-bottom: 15px;
-        }
+    .btn-secondary {
+      background: #e5e7eb;
+      color: #374151;
+    }
 
-        .result.pass h2 {
-            color: #4caf50;
-        }
+    .result-box {
+      margin-top: 18px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      font-size: 0.9rem;
+      color: #1f2933;
+      display: none;
+    }
 
-        .result.fail h2 {
-            color: #f44336;
-        }
+    .result-score {
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
 
-        .score-display {
-            font-size: 48px;
-            font-weight: bold;
-            margin: 20px 0;
-        }
+    .result-message {
+      font-size: 0.9rem;
+    }
 
-        .result.pass .score-display {
-            color: #4caf50;
-        }
+    @media (max-width: 480px) {
+      .quiz-card {
+        padding: 20px 16px 22px;
+      }
 
-        .result.fail .score-display {
-            color: #f44336;
-        }
+      h1 {
+        font-size: 1.35rem;
+      }
 
-        .feedback {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: white;
-            border-radius: 8px;
-        }
-
-        .answer-review {
-            text-align: left;
-            margin-top: 20px;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        .review-item {
-            padding: 10px;
-            margin: 8px 0;
-            border-radius: 5px;
-            background-color: white;
-        }
-
-        .review-item.correct {
-            border-left: 5px solid #4caf50;
-        }
-
-        .review-item.incorrect {
-            border-left: 5px solid #f44336;
-        }
-
-        .correct-answer {
-            color: #4caf50;
-            font-weight: bold;
-        }
-
-        .wrong-answer {
-            color: #f44336;
-            font-weight: bold;
-        }
-
-        .reset-button {
-            background-color: #ff9800;
-            color: white;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 20px;
-            transition: background-color 0.3s;
-        }
-
-        .reset-button:hover {
-            background-color: #f57c00;
-        }
-
-        @media (max-width: 600px) {
-            .quiz-container {
-                padding: 20px;
-            }
-
-            .quiz-header h1 {
-                font-size: 22px;
-            }
-
-            .score-display {
-                font-size: 36px;
-            }
-        }
-    </style>
+      .question {
+        padding: 12px 10px 10px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="quiz-container">
-        <div class="quiz-header">
-            <h1>📖 Junie B. Jones - Chapter 1 Quiz</h1>
-            <div class="book-info">Meeting Mrs. | Chapter Book Quiz</div>
+  <div class="quiz-card">
+    <div class="quiz-inner">
+      <div class="pill">
+        📚 Junie B. Jones
+        <span>Chapter 1 Reading Quiz</span>
+      </div>
+      <h1>Chapter 1 Quiz</h1>
+      <p class="subtitle">
+        책을 읽고 기억나는 내용을 떠올리면서 문제를 풀어 보세요.
+      </p>
+
+      <form id="quiz-form">
+        <!-- Q1 -->
+        <div class="question" data-answer="b">
+          <div class="question-title">
+            1. At the beginning of Chapter 1, where is Junie B. Jones?
+          </div>
+          <div class="options">
+            <label class="option-label">
+              <input type="radio" name="q1" value="a" />
+              At the grocery store with her mom.
+            </label>
+            <label class="option-label">
+              <input type="radio" name="q1" value="b" />
+              In her kindergarten classroom.
+            </label>
+            <label class="option-label">
+              <input type="radio" name="q1" value="c" />
+              On the school bus.
+            </label>
+            <label class="option-label">
+              <input type="radio" name="q1" value="d" />
+              At her best friend’s house.
+            </label>
+          </div>
+          <div class="question-footer">정답: data-answer 속성에 b 로 입력됨</div>
         </div>
 
-        <div class="student-info">
-            <label for="studentName">Name:</label>
-            <input type="text" id="studentName" placeholder="Enter your name" required>
+        <!-- Q2 -->
+        <div class="question" data-answer="c">
+          <div class="question-title">
+            2. What is Junie B. most worried about in this chapter?
+          </div>
+          <div class="options">
+            <label class="option-label">
+              <input type="radio" name="q2" value="a" />
+              Losing her lunch box.
+            </label>
+            <label class="option-label">
+              <input type="radio" name="q2" value="b" />
+              Forgetting her homework.
+            </label>
+            <label class="option-label">
+              <input type="radio" name="q2" value="c" />
+              Riding the school bus home.
+            </label>
+            <label class="option-label">
+              <input type="radio" name="q2" value="d" />
+              Talking to the teacher.
+            </label>
+          </div>
+          <div class="question-footer">정답: c</div>
         </div>
 
-        <form id="quizForm">
-            <!-- Part 1: Vocabulary -->
-            <div class="part-title">📚 Part 1: Vocabulary (8 questions)</div>
-
-            <div class="question">
-                <div class="question-number">1. What does "stand for" mean?</div>
-                <div class="options">
-                    <label class="option">
-                        <input type="radio" name="q1" value="a" required>
-                        <span>a) To be on your feet</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q1" value="b">
-                        <span>b) To mean or represent</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q1" value="c">
-                        <span>c) To wait in line</span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="question">
-                <div class="question-number">2. What is "kindergarten"?</div>
-                <div class="options">
-                    <label class="option">
-                        <input type="radio" name="q2" value="a" required>
-                        <span>a) A type of garden</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q2" value="b">
-                        <span>b) A school for young children</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q2" value="c">
-                        <span>c) A playground</span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="question">
-                <div class="question-number">3. What does "holler" mean?</div>
-                <div class="options">
-                    <label class="option">
-                        <input type="radio" name="q3" value="a" required>
-                        <span>a) To whisper quietly</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q3" value="b">
-                        <span>b) To shout loudly</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q3" value="c">
-                        <span>c) To sing a song</span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="question">
-                <div class="question-number">4. What does "roll one's eyes" mean?</div>
-                <div class="options">
-                    <label class="option">
-                        <input type="radio" name="q4" value="a" required>
-                        <span>a) To close your eyes</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q4" value="b">
-                        <span>b) To move your eyes to show annoyance</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q4" value="c">
-                        <span>c) To open your eyes wide</span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="question">
-                <div class="question-number">5. What does "frown" mean?</div>
-                <div class="options">
-                    <label class="option">
-                        <input type="radio" name="q5" value="a" required>
-                        <span>a) To make your eyebrows look angry</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q5" value="b">
-                        <span>b) To smile widely</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q5" value="c">
-                        <span>c) To close your eyes</span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="question">
-                <div class="question-number">6. What does "grumpy" mean?</div>
-                <div class="options">
-                    <label class="option">
-                        <input type="radio" name="q6" value="a" required>
-                        <span>a) Very happy</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q6" value="b">
-                        <span>b) In a bad mood and complaining</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q6" value="c">
-                        <span>c) Very excited</span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="question">
-                <div class="question-number">7. What does "babyish" mean?</div>
-                <div class="options">
-                    <label class="option">
-                        <input type="radio" name="q7" value="a" required>
-                        <span>a) Acting like a grown-up</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q7" value="b">
-                        <span>b) Acting like a baby</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q7" value="c">
-                        <span>c) Being very smart</span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="question">
-                <div class="question-number">8. What does "explain" mean?</div>
-                <div class="options">
-                    <label class="option">
-                        <input type="radio" name="q8" value="a" required>
-                        <span>a) To ask a question</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q8" value="b">
-                        <span>b) To make something clear</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q8" value="c">
-                        <span>c) To argue loudly</span>
-                    </label>
-                </div>
-            </div>
-
-            <!-- Part 2: Comprehension -->
-            <div class="part-title">✓ Part 2: Comprehension (7 questions)</div>
-
-            <div class="question">
-                <div class="question-number">9. How old is Junie B. Jones?</div>
-                <div class="options">
-                    <label class="option">
-                        <input type="radio" name="q9" value="a" required>
-                        <span>a) Five years old</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q9" value="b">
-                        <span>b) Almost six years old</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q9" value="c">
-                        <span>c) Seven years old</span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="question">
-                <div class="question-number">10. What does the "B" stand for?</div>
-                <div class="options">
-                    <label class="option">
-                        <input type="radio" name="q10" value="a" required>
-                        <span>a) Barbara</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q10" value="b">
-                        <span>b) Betty</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q10" value="c">
-                        <span>c) Beatrice</span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="question">
-                <div class="question-number">11. What did Junie B. do to her shoes?</div>
-                <div class="options">
-                    <label class="option">
-                        <input type="radio" name="q11" value="a" required>
-                        <span>a) She washed them</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q11" value="b">
-                        <span>b) She licked them</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q11" value="c">
-                        <span>c) She painted them</span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="question">
-                <div class="question-number">12. Who bought Junie B.'s hat?</div>
-                <div class="options">
-                    <label class="option">
-                        <input type="radio" name="q12" value="a" required>
-                        <span>a) Her mother</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q12" value="b">
-                        <span>b) Grampa Miller</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q12" value="c">
-                        <span>c) Her teacher</span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="question">
-                <div class="question-number">13. What color is the school bus?</div>
-                <div class="options">
-                    <label class="option">
-                        <input type="radio" name="q13" value="a" required>
-                        <span>a) Red</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q13" value="b">
-                        <span>b) Blue</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q13" value="c">
-                        <span>c) Yellow</span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="question">
-                <div class="question-number">14. Who is the bus driver?</div>
-                <div class="options">
-                    <label class="option">
-                        <input type="radio" name="q14" value="a" required>
-                        <span>a) Mr. Smith</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q14" value="b">
-                        <span>b) Mr. Woo</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q14" value="c">
-                        <span>c) Mr. Jones</span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="question">
-                <div class="question-number">15. What is "missy"?</div>
-                <div class="options">
-                    <label class="option">
-                        <input type="radio" name="q15" value="a" required>
-                        <span>a) Junie B.'s nickname</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q15" value="b">
-                        <span>b) What Mother calls her when in trouble</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q15" value="c">
-                        <span>c) Her friend's name</span>
-                    </label>
-                </div>
-            </div>
-
-            <!-- Part 3: Main Ideas -->
-            <div class="part-title">📝 Part 3: Main Ideas (5 questions)</div>
-
-            <div class="question">
-                <div class="question-number">16. How does Junie B. feel about kindergarten?</div>
-                <div class="options">
-                    <label class="option">
-                        <input type="radio" name="q16" value="a" required>
-                        <span>a) Completely excited</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q16" value="b">
-                        <span>b) Curious but also nervous</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q16" value="c">
-                        <span>c) Doesn't want to go at all</span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="question">
-                <div class="question-number">17. Why does Junie B. get upset about the bus?</div>
-                <div class="options">
-                    <label class="option">
-                        <input type="radio" name="q17" value="a" required>
-                        <span>a) She doesn't like yellow</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q17" value="b">
-                        <span>b) They don't answer her question</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q17" value="c">
-                        <span>c) She wants to walk</span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="question">
-                <div class="question-number">18. What does Junie B.'s behavior show?</div>
-                <div class="options">
-                    <label class="option">
-                        <input type="radio" name="q18" value="a" required>
-                        <span>a) She is very shy</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q18" value="b">
-                        <span>b) She is confident and speaks her mind</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q18" value="c">
-                        <span>c) She is mean</span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="question">
-                <div class="question-number">19. Why does Mother say "Watch yourself, missy"?</div>
-                <div class="options">
-                    <label class="option">
-                        <input type="radio" name="q19" value="a" required>
-                        <span>a) Junie B. might fall</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q19" value="b">
-                        <span>b) Junie B. used rude words</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q19" value="c">
-                        <span>c) Junie B. was too quiet</span>
-                    </label>
-                </div>
-            </div>
-
-            <div class="question">
-                <div class="question-number">20. How does Junie B. really feel at the end?</div>
-                <div class="options">
-                    <label class="option">
-                        <input type="radio" name="q20" value="a" required>
-                        <span>a) Excited about the bus</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q20" value="b">
-                        <span>b) Still scared inside</span>
-                    </label>
-                    <label class="option">
-                        <input type="radio" name="q20" value="c">
-                        <span>c) Forgot about it</span>
-                    </label>
-                </div>
-            </div>
-
-            <button type="submit" class="submit-button">Submit Quiz</button>
-        </form>
-
-        <div id="result" class="result">
-            <h2 id="resultTitle"></h2>
-            <div class="score-display" id="scoreDisplay"></div>
-            <div id="feedback" class="feedback"></div>
-            <div id="answerReview" class="answer-review"></div>
-            <button class="reset-button" onclick="resetQuiz()">Try Again</button>
+        <!-- Q3 -->
+        <div class="question" data-answer="a">
+          <div class="question-title">
+            3. How does Junie B. feel about the school bus?
+          </div>
+          <div class="options">
+            <label class="option-label">
+              <input type="radio" name="q3" value="a" />
+              She thinks it is scary.
+            </label>
+            <label class="option-label">
+              <input type="radio" name="q3" value="b" />
+              She loves riding it with friends.
+            </label>
+            <label class="option-label">
+              <input type="radio" name="q3" value="c" />
+              She thinks it is too slow.
+            </label>
+            <label class="option-label">
+              <input type="radio" name="q3" value="d" />
+              She has never seen a school bus.
+            </label>
+          </div>
+          <div class="question-footer">정답: a</div>
         </div>
+
+        <!-- 필요한 만큼 질문을 같은 형식으로 계속 추가하면 됩니다. -->
+
+        <div class="btn-row">
+          <button type="button" class="btn-primary" onclick="gradeQuiz()">
+            ✅ 채점하기
+          </button>
+          <button type="reset" class="btn-secondary" onclick="resetHighlight()">
+            🔄 다시 풀기
+          </button>
+        </div>
+
+        <div id="result-box" class="result-box">
+          <div id="score-text" class="result-score"></div>
+          <div id="message-text" class="result-message"></div>
+        </div>
+      </form>
     </div>
+  </div>
 
-    <script>
-        const correctAnswers = {
-            q1: 'b', q2: 'b', q3: 'b', q4: 'b', q5: 'a',
-            q6: 'b', q7: 'b', q8: 'b', q9: 'b', q10: 'c',
-            q11: 'b', q12: 'b', q13: 'c', q14: 'b', q15: 'b',
-            q16: 'b', q17: 'b', q18: 'b', q19: 'b', q20: 'b'
-        };
+  <script>
+    function gradeQuiz() {
+      const form = document.getElementById("quiz-form");
+      const questions = document.querySelectorAll(".question");
+      let score = 0;
 
-        const questionTexts = {
-            q1: 'What does "stand for" mean?',
-            q2: 'What is "kindergarten"?',
-            q3: 'What does "holler" mean?',
-            q4: 'What does "roll one\'s eyes" mean?',
-            q5: 'What does "frown" mean?',
-            q6: 'What does "grumpy" mean?',
-            q7: 'What does "babyish" mean?',
-            q8: 'What does "explain" mean?',
-            q9: 'How old is Junie B. Jones?',
-            q10: 'What does the "B" stand for?',
-            q11: 'What did Junie B. do to her shoes?',
-            q12: 'Who bought Junie B.\'s hat?',
-            q13: 'What color is the school bus?',
-            q14: 'Who is the bus driver?',
-            q15: 'What is "missy"?',
-            q16: 'How does Junie B. feel about kindergarten?',
-            q17: 'Why does Junie B. get upset about the bus?',
-            q18: 'What does Junie B.\'s behavior show?',
-            q19: 'Why does Mother say "Watch yourself, missy"?',
-            q20: 'How does Junie B. really feel at the end?'
-        };
+      questions.forEach((q, index) => {
+        const correct = q.dataset.answer; // 'a', 'b', 'c', 'd'
+        const name = "q" + (index + 1);
+        const selected = form.querySelector(
+          'input[name="' + name + '"]:checked'
+        );
 
-        document.getElementById('quizForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const studentName = document.getElementById('studentName').value.trim();
-            if (!studentName) {
-                alert('Please enter your name!');
-                return;
-            }
-
-            let score = 0;
-            let wrongAnswers = [];
-
-            for (let question in correctAnswers) {
-                const userAnswer = document.querySelector(`input[name="${question}"]:checked`);
-                if (userAnswer && userAnswer.value === correctAnswers[question]) {
-                    score++;
-                } else {
-                    wrongAnswers.push({
-                        question: question,
-                        userAnswer: userAnswer ? userAnswer.value : 'No answer',
-                        correctAnswer: correctAnswers[question]
-                    });
-                }
-            }
-
-            const totalQuestions = Object.keys(correctAnswers).length;
-            const percentage = Math.round((score / totalQuestions) * 100);
-
-            displayResults(score, totalQuestions, percentage, wrongAnswers, studentName);
-            saveToGoogleSheets(studentName, score, totalQuestions, percentage);
+        // 스타일 초기화
+        q.querySelectorAll(".option-label").forEach((label) => {
+          label.classList.remove("correct", "wrong", "selected");
         });
 
-        function displayResults(score, total, percentage, wrongAnswers, studentName) {
-            const resultDiv = document.getElementById('result');
-            const resultTitle = document.getElementById('resultTitle');
-            const scoreDisplay = document.getElementById('scoreDisplay');
-            const feedback = document.getElementById('feedback');
-            const answerReview = document.getElementById('answerReview');
+        if (selected) {
+          const value = selected.value;
+          const label = selected.parentElement;
+          label.classList.add("selected");
 
-            resultDiv.classList.remove('pass', 'fail');
-            resultDiv.classList.add(percentage >= 70 ? 'pass' : 'fail');
-
-            resultTitle.textContent = percentage >= 70 ? '🎉 Great Job!' : '💪 Keep Practicing!';
-            scoreDisplay.textContent = `${score} / ${total} (${percentage}%)`;
-
-            let feedbackText = '';
-            if (percentage >= 90) {
-                feedbackText = 'Excellent! You understand Chapter 1 very well! 🌟';
-            } else if (percentage >= 80) {
-                feedbackText = 'Great job! You have a good grasp! 👍';
-            } else if (percentage >= 70) {
-                feedbackText = 'Good effort! Review and try again! 😊';
-            } else {
-                feedbackText = 'Keep trying! Reread Chapter 1! 📚';
-            }
-            feedback.textContent = feedbackText;
-
-            let reviewHTML = '<h3 style="margin-bottom: 15px;">📋 Review</h3>';
-            if (wrongAnswers.length > 0) {
-                wrongAnswers.forEach((item) => {
-                    const questionNum = item.question.substring(1);
-                    reviewHTML += `
-                        <div class="review-item incorrect">
-                            <strong>Question ${questionNum}:</strong> ${questionTexts[item.question]}<br>
-                            <span class="wrong-answer">Your answer: ${item.userAnswer}</span><br>
-                            <span class="correct-answer">Correct answer: ${item.correctAnswer}</span>
-                        </div>
-                    `;
-                });
-            } else {
-                reviewHTML += '<div class="review-item correct"><strong>🎉 Perfect!</strong></div>';
-            }
-
-            answerReview.innerHTML = reviewHTML;
-
-            document.getElementById('quizForm').style.display = 'none';
-            document.querySelector('.student-info').style.display = 'none';
-            resultDiv.classList.add('show');
+          if (value === correct) {
+            score++;
+            label.classList.add("correct");
+          } else {
+            label.classList.add("wrong");
+          }
         }
+      });
 
-        function saveToGoogleSheets(name, correct, total, percentage) {
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbyLa82IZktsidLPQR3WFN30ZspAyYtvoAgCEXd2hfd8mqVzxQNsFd4IwK8B_PftqobhDw/exec';
-            
-            const formData = new FormData();
-            formData.append('name', name);
-            formData.append('bookId', 'JBJ-CH1');
-            formData.append('bookTitle', 'Junie B. Jones - Chapter 1');
-            formData.append('date', new Date().toLocaleDateString('en-US'));
-            formData.append('correct', correct);
-            formData.append('total', total);
-            formData.append('percentage', percentage);
+      const total = questions.length;
+      const percent = Math.round((score / total) * 100);
 
-            fetch(scriptURL, {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.text())
-            .then(data => console.log('Success:', data))
-            .catch(error => console.error('Error:', error));
-        }
+      const scoreText = document.getElementById("score-text");
+      const messageText = document.getElementById("message-text");
+      const resultBox = document.getElementById("result-box");
 
-        function resetQuiz() {
-            document.getElementById('quizForm').reset();
-            document.getElementById('studentName').value = '';
-            document.getElementById('quizForm').style.display = 'block';
-            document.querySelector('.student-info').style.display = 'block';
-            document.getElementById('result').classList.remove('show');
-            window.scrollTo(0, 0);
-        }
-    </script>
+      scoreText.textContent = `점수: ${score} / ${total} (${percent}점)`;
+
+      let msg = "";
+      if (percent === 100) {
+        msg = "완벽해요! 내용을 아주 잘 이해했어요 👏";
+      } else if (percent >= 80) {
+        msg = "아주 잘했어요 👍 한 번 더 읽으면 더 좋아질 거예요.";
+      } else if (percent >= 60) {
+        msg = "괜찮아요 🙂 틀린 문제 위주로 다시 책을 확인해 보세요.";
+      } else {
+        msg =
+          "조금 더 읽어볼까요? 📖 책을 다시 훑어본 뒤 한 번 더 도전해 보세요!";
+      }
+      messageText.textContent = msg;
+
+      resultBox.style.display = "block";
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function resetHighlight() {
+      document
+        .querySelectorAll(".option-label")
+        .forEach((label) =>
+          label.classList.remove("correct", "wrong", "selected")
+        );
+      document.getElementById("result-box").style.display = "none";
+    }
+  </script>
 </body>
 </html>
